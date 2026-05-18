@@ -1,0 +1,36 @@
+\section{Methodology}
+
+We investigate persona-persona dislike through a two-pronged approach: (1) measuring the correlation between persona distance and preference devaluation, and (2) testing for \schismogenesis.
+
+\subsection{Persona Selection and Distance Mapping}
+
+We sample 20 multifaceted personas from the \dataset dataset. Each persona includes a summary, cultural background, and professional bio. To quantify the "social distance" between personas, we compute embeddings for the full descriptions using the \embeddingmodel model. We define the distance $d(P_A, P_B)$ between Persona $A$ and Persona $B$ as the cosine distance between their respective embeddings:
+\begin{equation}
+    d(P_A, P_B) = 1 - \frac{\vv_A \cdot \vv_B}{\|\vv_A\| \|\vv_B\|}
+\end{equation}
+where $\vv_A$ and $\vv_B$ are the embedding vectors.
+
+\subsection{Preference Generation and Reciprocal Evaluation}
+
+For each persona, we use \gpt to generate 5 specific "likes" and 5 specific "dislikes" based on their description. These preferences are intended to be grounded in their lifestyle and values.
+
+In the evaluation phase, we select 10 personas to act as "Evaluators." Each Evaluator is prompted to adopt their assigned persona and rate their agreement with the preferences of 6 target personas on a 1--5 Likert scale. The targets are selected to cover a range of distances:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item {\bf Self:} The Evaluator's own preferences (baseline).
+    \item {\bf Close:} Two target personas with small $d(P_A, P_B)$.
+    \item {\bf Medium:} One target persona with moderate distance.
+    \item {\bf Far:} Two target personas with maximum distance in the sampled set.
+\end{itemize}
+
+\subsection{\Schismogenesis Test}
+
+To test if LLMs capture the structural logic of opposition, we conduct a "zero-shot schismogenesis" test. The model is instructed: "You are the complete opposite of [Target Persona Description]. Rate your agreement with the following preferences of [Target Persona]." We measure the rejection rate (percentage of ratings $\le 2$) and the average Likert score.
+
+\subsection{Metrics}
+
+We evaluate the relationship between distance and dislike using:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item {\bf Pearson $r$ and Spearman $\rho$:} Correlation between $d(P_A, P_B)$ and average Likert rating.
+    \item {\bf Rejection Rate:} Frequency of negative ratings (1 or 2) in cross-persona and schismogenesis tasks.
+    \item {\bf Qualitative Justification:} Analysis of the reasoning provided by the model for its ratings.
+\end{itemize}

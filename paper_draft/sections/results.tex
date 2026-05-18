@@ -1,0 +1,49 @@
+\section{Results}
+
+Our experiments reveal a clear relationship between persona distance and preference devaluation, supporting our hypothesis that LLMs model persona-persona dislike as a function of their distance in persona space.
+
+\subsection{Distance-Dislike Correlation}
+
+We find a strong and statistically significant negative correlation between the embedding-based distance between two personas and their mutual preference agreement. \tabref{tab:correlation} summarizes the correlation metrics.
+
+\begin{table}[h]
+\centering
+\caption{Correlation between persona distance and preference agreement rating. Both Pearson and Spearman coefficients show a strong negative relationship ($p < 0.001$).}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Metric & Correlation Coefficient & $p$-value \\
+\midrule
+Pearson $r$ & -0.4913 & 0.0003 \\
+Spearman $\rho$ & -0.5219 & 0.0001 \\
+\bottomrule
+\end{tabular}
+\label{tab:correlation}
+\end{table}
+
+The scatter plot in \figref{fig:distance_vs_rating} (see Appendix) illustrates this trend. Personas at greater distances consistently express lower agreement with each other's "likes." In contrast, self-agreement remains high ($\mu \approx 4.5$), providing a reliable baseline for persona consistency.
+
+\para{Outgroup Disagreement.} Personas at maximum distance frequently assigned ratings of 1 or 2 to the target's preferences. Qualitative analysis of the justifications reveals that the model understands the *why* behind the clash. For instance, a "routine-obsessed" persona justified disliking an artistic persona's "spontaneous" preferences by stating: "I find lack of structure to be inefficient and stressful." This suggests that the dislike is not a random sentiment shift but is grounded in the conflicting values of the personas.
+
+\subsection{\Schismogenesis}
+
+When instructed to adopt an "opposite" persona, the model demonstrated a remarkable ability to invert the target's preferences. \tabref{tab:schismogenesis} shows the results of this zero-shot task.
+
+\begin{table}[h]
+\centering
+\caption{Results of the \Schismogenesis task. The model effectively inverts the target's preferences when adopting an opposite persona.}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Metric & Value \\
+\midrule
+Average Rating for Likes & 1.76 \\
+Rejection Rate (Rating $\le$ 2) & {\bf 88\%} \\
+\bottomrule
+\end{tabular}
+\label{tab:schismogenesis}
+\end{table}
+
+This high rejection rate indicates that the concept of "opposition" is structurally encoded. The model doesn't just "dislike everything"; it constructs a counter-identity that specifically negates the target's values. For example, when tasked with being the opposite of a "corporate minimalist," the model adopted a "maximalist bohemian" persona and rejected all preferences related to organization and efficiency.
+
+\subsection{Self vs. Others}
+
+We also compared the average agreement when a persona evaluates their own preferences versus evaluating those of others. As shown in our box plot analysis (see \figref{fig:self_vs_others} in Appendix), there is a sharp drop in agreement as soon as the target is not "self," even for "close" personas, highlighting the strength of ingroup identity in LLMs.

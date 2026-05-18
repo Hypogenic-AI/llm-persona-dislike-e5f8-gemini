@@ -1,0 +1,464 @@
+You are an academic paper writer. Generate a complete NEURIPS style paper
+based on the experiment results provided.
+
+════════════════════════════════════════════════════════════════════════════════
+                         IMPORTANT: BEFORE YOU START
+════════════════════════════════════════════════════════════════════════════════
+
+Before writing any content, you MUST complete these steps:
+
+1. READ THE SKILL: Review the paper-writer skill at .gemini/skills/paper-writer/SKILL.md
+2. READ THE STYLE GUIDE: Study templates/paper_writing/lab_style_guide.md carefully
+3. REVIEW EXAMPLES: Browse paper_examples/ for formatting and language patterns:
+   - Look at sections/1.introduction.tex for language style
+   - Look at tables/*.tex for table formatting
+   - Look at commands/*.tex for macro usage
+4. VERIFY COMMAND TEMPLATES: Command templates (math.tex, general.tex, macros.tex) are pre-copied to paper_draft/commands/
+
+CRITICAL: Reference example papers for FORMATTING and LANGUAGE STYLE only.
+Do NOT copy content, phrasing, or narrative structure from the example papers.
+The examples are in a different research domain - focus only on presentation style.
+
+════════════════════════════════════════════════════════════════════════════════
+                            EXPERIMENT REPORT
+════════════════════════════════════════════════════════════════════════════════
+
+# Research Report: Do LLMs model persona-persona dislike?
+
+## 1. Executive Summary
+This research investigated whether Large Language Models (LLMs) capture the relational structure of persona-persona dislike. We hypothesized that personas far apart in a multidimensional "persona space" would express more dislike for each other's preferences, reflecting human social dynamics where distinction is often defined through opposition. Using the `Nemotron-Personas-USA` dataset and GPT-4o-mini, we demonstrated a statistically significant negative correlation ($r = -0.49$, $p < 0.001$) between persona distance (measured via embedding cosine distance) and reciprocal preference agreement. Furthermore, we showed that LLMs can perform "zero-shot schismogenesis," where adopting an "opposite" persona leads to the systematic rejection of the target's specific likes (88% rejection rate).
+
+## 2. Research Question & Motivation
+**Hypothesis:** LLMs do not just model isolated persona traits but also encode the relational logic of opposition. Personas with divergent values and lifestyles are modeled as having mutual antipathy for each other's tastes.
+
+**Importance:** As LLMs are increasingly used in multi-agent simulations and social modeling, understanding if they inherently capture "us-vs-them" dynamics at a granular preference level is crucial. This has implications for polarization modeling and the design of cooperative AI systems.
+
+## 3. Methodology
+- **Data:** 20 multifaceted personas sampled from `Nemotron-Personas-USA`.
+- **Persona Distance:** Computed using `all-MiniLM-L6-v2` embeddings of full persona descriptions (persona summary + cultural background + professional bio).
+- **Preference Generation:** For each persona, GPT-4o-mini generated 5 specific likes and 5 specific dislikes based on their description.
+- **Reciprocal Evaluation:** 10 "Evaluator" personas were prompted to adopt their persona and rate their agreement (1-5 Likert scale) with the preferences of 6 target personas (Self, 2 Close, 2 Far, 1 Medium).
+- **Schismogenesis Test:** The model was told it was the "complete opposite" of a target persona and asked to evaluate the target's likes.
+- **Metrics:** Pearson/Spearman correlation between persona distance and average rating; rejection rate in schismogenesis.
+
+## 4. Results
+### Distance-Dislike Correlation
+We found a strong and significant negative correlation between the distance between two personas and how much they agreed with each other's preferences.
+
+| Metric | Correlation | p-value |
+|--------|-------------|---------|
+| Pearson $r$ | -0.4913 | 0.0003 |
+| Spearman $\rho$ | -0.5219 | 0.0001 |
+
+- **Self-Agreement (Baseline):** Personas evaluating their own preferences had a much higher average agreement ($\mu \approx 4.5$) compared to evaluating others.
+- **Outgroup Disagreement:** Personas at the maximum distance frequently gave ratings of 1 or 2 to the other's preferences, often justifying it through the contrast in their values (e.g., "I find rigid organization stifling" vs "I thrive in creative chaos").
+
+### Schismogenesis
+When instructed to be the "opposite" of a target, the model demonstrated a remarkable ability to invert preferences.
+- **Average Rating for Likes:** 1.76 (on a 1-5 scale).
+- **Rejection Rate (Rating $\le$ 2):** 88%.
+
+## 5. Analysis & Discussion
+The results support the idea that LLMs have a "social map" where distance translates into perceived opposition. This goes beyond simple sentiment; the justifications provided by the model shows it understands *why* certain personas would clash. For example, a "routine-obsessed" persona was consistently modeled as disliking the "spontaneous" preferences of an artistic persona.
+
+The "zero-shot schismogenesis" results are particularly striking as they show that the "opposite" relationship is structurally encoded. The model doesn't just "dislike everything"; it constructs a counter-identity that specifically negates the target's values.
+
+## 6. Limitations
+- **Sample Size:** Due to time constraints, we only used a subset of 20 personas and 10 evaluators.
+- **Model Choice:** We used GPT-4o-mini; results might vary with larger or different model families (e.g., Llama, Claude).
+- **Embedding Simplification:** Cosine distance of text embeddings is a proxy for "social distance" but might miss specific dimensions of conflict (e.g., status, power).
+
+## 7. Conclusions & Next Steps
+LLMs do indeed model persona-persona dislike as a function of their distance in persona space. They capture the relational and oppositional nature of identity. 
+**Future Work:**
+- Investigate if "fine-grained" distance (e.g., distance in specific domains like 'Arts' vs 'Politics') predicts dislike differently.
+- Test if LLMs can find "common ground" between distant personas when specifically prompted to do so.
+- Explore the "asymmetry" of dislike (e.g., does a high-status persona dislike a low-status one more than vice-versa?).
+
+## Figures
+- `figures/distance_vs_rating.png`: Scatter plot showing the negative correlation.
+- `figures/self_vs_others.png`: Box plot comparing self-agreement to outgroup agreement.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                            RESEARCH PLAN
+════════════════════════════════════════════════════════════════════════════════
+
+# Research Plan: Do LLMs model persona-persona dislike?
+
+## Motivation & Novelty Assessment
+
+### Why This Research Matters
+Understanding how LLMs model interpersonal and intergroup dynamics is crucial as they are increasingly used in social simulations, negotiation support, and as personalized assistants. If LLMs inherently model "dislike" based on persona distance, they might inadvertently amplify polarization or fail to find common ground in multi-agent settings. Capturing the "relational" aspect of identity—not just what a persona likes, but who they are *against*—is a key step toward more sophisticated and human-like social modeling.
+
+### Gap in Existing Work
+Current research largely focuses on well-known social divides (politics, race, religion) or ingroup/outgroup bias in a broad sense. There is limited work on whether LLMs capture "persona-persona dislike" in a more fluid, preference-driven space. Specifically, does a "distance" in persona space (defined by disparate hobbies, values, and lifestyle) automatically translate into mutual devaluation of each other's specific preferences, even if those preferences aren't inherently controversial?
+
+### Our Novel Contribution
+We will move beyond demographic and political divides to investigate whether LLMs exhibit "relational dislike" based on **latent persona distance**. We will use high-fidelity, multifaceted personas (from Nemotron-Personas-USA) and test if the degree of "dislike" for another persona's preferences correlates with the distance between them in a multidimensional persona space. We also explicitly test the "schismogenesis" hypothesis: do personas define themselves by *opposition* to others?
+
+### Experiment Justification
+- **Experiment 1: Persona Distance and Preference Devaluation.** 
+    - **Why needed?** To establish if the intensity of dislike for another persona's preferences is a function of the "distance" between the personas in a high-dimensional persona space.
+- **Experiment 2: Zero-Shot Schismogenesis.**
+    - **Why needed?** To see if LLMs capture the structural logic of opposition. If told they are "the opposite" of a specific persona, will they systematically reject that persona's specific preferences even without being told what they are?
+
+---
+
+## Research Question
+Do Large Language Models (LLMs) capture the relational structure of persona-persona dislike, such that personas far apart in a multidimensional persona space are more likely to dislike each other's preferences?
+
+## Hypothesis Decomposition
+1. **H1 (Distance-Dislike Correlation):** The degree of expressed dislike by Persona A toward the stated preferences of Persona B is positively correlated with the distance between Persona A and Persona B in a latent persona space.
+2. **H2 (Preference Opposition):** LLMs can generate a "negative persona" that systematically opposes the preferences of a target persona, demonstrating an internal model of persona-based opposition.
+3. **H3 (Asymmetry):** Outgroup dislike (Persona A evaluating Persona B's preferences) will be significantly stronger than ingroup neutrality or favor (Persona A evaluating Persona A's or a similar Persona C's preferences).
+
+## Proposed Methodology
+
+### Approach
+We will use the `Nemotron-Personas-USA` dataset to select a set of diverse personas. We will compute "distances" between these personas using embedding-based similarity of their descriptions. We will then conduct "cross-persona evaluations" where one persona is asked to evaluate a list of preferences (likes/dislikes) generated by another persona.
+
+### Experimental Steps
+1. **Step 1: Persona Selection and Distance Mapping.**
+    - Sample 20-30 rich personas from `Nemotron-Personas-USA`.
+    - Generate embeddings for each persona description (using a state-of-the-art embedding model).
+    - Compute a pairwise distance matrix.
+2. **Step 2: Preference Generation.**
+    - For each persona, generate a list of 10 specific preferences (5 likes, 5 dislikes) based on their persona description.
+3. **Step 3: Reciprocal Evaluation.**
+    - For a subset of persona pairs (near, medium, far), prompt the LLM to adopt Persona A and rate their level of agreement/sentiment toward each of Persona B's preferences.
+    - Measure sentiment using a 1-5 Likert scale and sentiment analysis of the justification.
+4. **Step 4: Schismogenesis Test.**
+    - Prompt the LLM: "You are the complete opposite of [Persona A description]. What are your views on [Persona A's favorite thing]?"
+    - Check if the model consistently adopts the inverse position.
+
+### Baselines
+- **Neutral Baseline:** The model's evaluation of the same preferences without any persona conditioning (default model behavior).
+- **Ingroup Baseline:** Persona A evaluating its own preferences (should be high agreement).
+- **Similar Persona Baseline:** Persona A evaluating Persona C's preferences, where C is "close" in persona space.
+
+### Evaluation Metrics
+- **Sentiment Score:** VADER or TextBlob sentiment of the evaluation text.
+- **Likert Agreement:** 1 (Strongly Disagree) to 5 (Strongly Agree).
+- **Distance Metric:** Cosine distance between persona embeddings.
+- **Outgroup Hostility Score:** Frequency of negative descriptors used for outgroup preferences vs. ingroup preferences.
+
+### Statistical Analysis Plan
+- Pearson/Spearman correlation between Persona Distance and Sentiment Score.
+- T-tests to compare "Close" vs. "Far" persona evaluations.
+- ANOVA to test the effect of "Persona Role" (Ingroup, Similar Outgroup, Dissimilar Outgroup) on Sentiment.
+
+## Expected Outcomes
+- We expect a significant negative correlation between persona distance and agreement score (H1).
+- We expect "Far" personas to express active dislike even for innocuous preferences (e.g., a "serious academic" disliking a "playful artist's" love for bright colors).
+- We expect the "Zero-Shot Schismogenesis" to show that the model understands structural opposition (H2).
+
+## Potential Challenges
+- **Persona "Bleed":** The model might struggle to maintain distinct personas across many calls.
+- **Toxicity Filters:** Strong "dislike" might trigger safety filters if not handled carefully (we will focus on "preference dislike" rather than "personal attacks").
+- **Embedding Limitations:** Simple embeddings might not capture the nuance of social "distance."
+
+## Success Criteria
+- Successful demonstration of a statistically significant relationship between persona distance and preference devaluation.
+- Qualitative evidence of "schismogenesis" where the model generates opposition based on persona distance.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          LITERATURE REVIEW
+════════════════════════════════════════════════════════════════════════════════
+
+# Literature Review: Persona-Persona Dislike in LLMs
+
+## Research Area Overview
+Large Language Models (LLMs) are increasingly recognized not just as static knowledge bases, but as systems capable of adopting distinct "personas" or "social identities." This literature review explores how these persona-conditioned LLMs exhibit "us-versus-them" dynamics, specifically focusing on the tendency for personas with divergent preferences to exhibit mutual dislike or opposition.
+
+## Key Papers
+
+### 1. Us-vs-Them bias in Large Language Models (Prama et al., 2025)
+- **Source**: arXiv:2512.13699
+- **Key Contribution**: Quantifies "ingroup solidarity" and "outgroup hostility" across multiple LLM architectures (GPT-4.1, LLaMA-3.1, etc.).
+- **Methodology**: Used "We are" (ingroup) and "They are" (outgroup) prompts. Analyzed sentiment shifts and semantic divergence using allotaxonometry and embedding regression.
+- **Results**: Found consistent ingroup favoritism and outgroup derogation. Conservative personas showed higher outgroup hostility, while liberal personas showed stronger ingroup solidarity.
+- **Relevance**: Directly supports the "dislike" part of the hypothesis and provides a robust measurement framework.
+
+### 2. Persona Setting Pitfall: Persistent Outgroup Biases in Large Language Models Arising from Social Identity Adoption (Dong et al., 2024)
+- **Source**: arXiv:2409.03843
+- **Key Contribution**: Highlights that assigning a persona leads LLMs to internalize social identity biases, with outgroup bias being as strong as ingroup favoritism.
+- **Methodology**: Used psychological batteries (Likert scales) and the Political Compass test to map value alignments.
+- **Results**: Confirmed that LLMs emulate human-like "partisan sorting," where identities (race, gender, religion) align with partisan views and lead to reciprocal opposition.
+- **Relevance**: Connects persona adoption to active rejection (dislike) of outgroup values.
+
+### 3. I Am Not Them: Fluid Identities and Persistent Out-group Bias in Large Language Models (Dong et al., 2024)
+- **Source**: arXiv:2402.10436
+- **Key Contribution**: Investigates how social identity adoption triggers negativity toward outgroups that exceeds positivity toward ingroups.
+- **Relevance**: Emphasizes that "dislike" (outgroup bias) is a dominant feature of persona-conditioned behavior.
+
+### 4. Are Social Sentiments Inherent in LLMs? An Empirical Study on Extraction of Inter-demographic Sentiments (Tanaka et al., 2024)
+- **Source**: arXiv:2408.04293
+- **Key Contribution**: Validates that LLMs encode "inter-group sentiments" (how one group feels about another) that reflect real-world social surveys.
+- **Relevance**: Shows that LLMs have a "map" of social sentiments that includes mutual dislikes.
+
+### 5. Evaluating Large Language Model Biases in Persona-Steered Generation (Liu et al., 2024)
+- **Source**: arXiv:2405.20253
+- **Key Contribution**: Examines how steering LLMs toward specific personas amplifies existing societal biases and affects downstream tasks.
+
+## Common Methodologies
+1.  **Sentence Completion**: Prompting with "We are..." and "They are..." to elicit identity-based sentiments.
+2.  **Likert Scale Evaluation**: Asking models to express agreement with value-laden statements from the perspective of a persona.
+3.  **Embedding Regression**: Analyzing shifts in contextual embeddings to quantify semantic divergence between personas.
+4.  **Allotaxonometry**: Using rank-turbulence divergence to compare word usage frequencies between "us" and "them" narratives.
+
+## Standard Baselines
+- **Default Persona**: The model's behavior without explicit persona conditioning.
+- **Opposing Personas**: Direct comparison between divergent personas (e.g., Liberal vs. Conservative, Pro-Choice vs. Pro-Life).
+
+## Gaps and Opportunities
+- Most research focuses on **political** or **demographic** personas. There is a gap in exploring **preference-based** personas (e.g., aesthetic tastes, technical preferences) and whether "opposition" emerges from pure preference divergence.
+- The concept of "schismogenesis" (definition-by-contrast) in LLMs is theorized but not explicitly tested as a mechanism for persona creation.
+
+## Recommendations for Our Experiment
+1.  **Use Preference-Based Personas**: Move beyond politics to see if divergent tastes (e.g., in art, music, or lifestyle) trigger similar "Us-vs-Them" dynamics.
+2.  **Reciprocal Evaluation**: Have Persona A evaluate the preferences of Persona B and vice versa.
+3.  **Measurement**: Combine sentiment analysis (labMT/VADER) with "outgroup hostility" scoring using an LLM judge.
+4.  **Dataset**: Utilize the `Nemotron-Personas-USA` dataset to source rich, multifaceted personas for the experiment.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          PAPER REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+Generate a complete academic paper with the following structure:
+
+1. TITLE
+   - Clear, specific, informative
+   - Should convey main finding or contribution
+
+2. AUTHOR
+   - Use this exact author line in the \author{} block: Ari Holtzman and NeuriCo
+
+3. ABSTRACT (150-250 words)
+   - Problem statement
+   - Approach
+   - Key results
+   - Significance
+
+4. INTRODUCTION
+   - Research problem and motivation
+   - Gap in existing work
+   - Our contribution (be specific)
+   - Paper organization
+
+5. RELATED WORK
+   - Organized by theme/approach
+   - Position our work relative to prior work
+   - Cite papers from literature review
+
+6. METHODOLOGY
+   - Clear description of approach
+   - Experimental setup
+   - Datasets used
+   - Evaluation metrics
+   - Baselines
+
+7. RESULTS
+   - Present results with tables and figures
+   - Statistical analysis
+   - Comparison to baselines
+   - Ablation studies (if applicable)
+
+8. DISCUSSION
+   - Interpretation of results
+   - Limitations
+   - Broader implications
+
+9. CONCLUSION
+   - Summary of contributions
+   - Key findings
+   - Future work
+
+10. REFERENCES
+   - BibTeX format
+   - All cited papers
+
+════════════════════════════════════════════════════════════════════════════════
+                          OUTPUT FORMAT
+════════════════════════════════════════════════════════════════════════════════
+
+Create a MODULAR LaTeX project with the following directory structure:
+
+paper_draft/
+├── main.tex              # Main file that imports all sections
+├── references.bib        # BibTeX references
+├── sections/
+│   ├── abstract.tex      # Abstract content
+│   ├── introduction.tex  # Introduction section
+│   ├── related_work.tex  # Related work section
+│   ├── methodology.tex   # Methodology section
+│   ├── results.tex       # Results section
+│   ├── discussion.tex    # Discussion section
+│   └── conclusion.tex    # Conclusion section
+├── figures/              # Directory for any generated figures
+├── tables/               # Directory for complex standalone tables
+└── appendix/             # Directory for appendix sections (if needed)
+
+INSTRUCTIONS:
+1. First, create the directory structure above (mkdir -p paper_draft/sections paper_draft/figures paper_draft/tables paper_draft/appendix)
+2. Write main.tex using the EXACT preamble for NEURIPS:
+
+   \documentclass{article}
+   \usepackage[final]{neurips_2025}  % NEURIPS style (neurips_2025.sty is in paper_draft/)
+   \usepackage[hidelinks]{hyperref}  % REQUIRED: clickable links
+   \usepackage{booktabs}  % REQUIRED: professional tables
+   \usepackage{graphicx}
+   \usepackage{amsmath,amssymb}
+
+   % Import command files
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+   % Use this bibliography style:
+   \bibliographystyle{plainnat}
+
+   \author{Ari Holtzman and NeuriCo}
+
+   - Use \input{sections/...} to include each section
+   - Use \bibliography{references} for references
+3. Write each section file with COMPLETE content (no placeholders)
+4. Each section file should include its \section{} command
+5. Write references.bib with all citations in BibTeX format
+6. After writing all files, compile the paper:
+   cd paper_draft && pdflatex -interaction=nonstopmode main.tex && bibtex main && pdflatex -interaction=nonstopmode main.tex && pdflatex -interaction=nonstopmode main.tex
+
+This modular structure allows humans to easily:
+- Edit individual sections without navigating a large file
+- Track changes per section
+- Reuse sections across different paper versions
+
+════════════════════════════════════════════════════════════════════════════════
+                          QUALITY REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+- Academic tone throughout
+- All claims must be supported by data from the experiment report
+- Proper citations using \cite{} commands
+- Clear figures and tables with proper captions
+- NO placeholder text - every section must have real content
+- The paper MUST compile without errors
+- If compilation fails, debug and fix the LaTeX errors
+
+════════════════════════════════════════════════════════════════════════════════
+                          LAB WRITING STYLE
+════════════════════════════════════════════════════════════════════════════════
+
+Follow these lab-specific conventions to match our paper style:
+
+1. LANGUAGE STYLE:
+   - Use active voice: "We propose", "We examine", "We focus on"
+   - Be direct and confident: "Our main question is...", "We hypothesize that..."
+   - State things clearly and simply - prefer plain language over jargon
+   - Use bold questions as paragraph organizers: {\bf what is X?}
+   - Include specific quantitative claims: "8.97% over baseline"
+   - Avoid fancy wording: "utilize" → "use", "facilitate" → "help"
+
+2. INTRODUCTION STRUCTURE:
+   - Engaging hook (get to the point quickly)
+   - Problem importance
+   - Gap identification
+   - Your approach with method figure reference
+   - Quantitative preview of results
+   - Contribution bullets (3-4 items, action verbs)
+
+3. CONTRIBUTION LISTS:
+   \begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+       \item We propose...
+       \item We conduct...
+       \item We complement...
+   \end{itemize}
+
+4. MODULAR COMMANDS STRUCTURE:
+   Command templates are pre-copied to paper_draft/commands/:
+   - math.tex: Math notation macros
+   - general.tex: Formatting macros
+   - macros.tex: Project-specific term definitions (customize this for your paper)
+
+   In main.tex, include:
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+5. REFERENCE CONVENTIONS:
+   Use reference macros from math.tex:
+   - \figref{fig:name} for "figure 1" (lowercase, in-sentence)
+   - \Figref{fig:name} for "Figure 1" (capitalized, start of sentence)
+   - \secref{sec:name} for "section 2"
+
+6. TEXT FORMATTING:
+   - Use \para{Header text} for bold paragraph headers
+   - Define method/dataset names with \textsc and \xspace:
+     \newcommand{\methodname}{\textsc{MethodName}\xspace}
+
+7. TABLE FORMATTING:
+   - Use booktabs package (no vertical lines)
+   - Use \resizebox{\textwidth}{!}{...} for wide tables
+   - Use @{} to remove padding at table edges
+   - Use \cmidrule(lr){x-y} for sub-headers
+   - Use \textsc{} for dataset/method names in headers
+   - Bold best results with {\bf ...}
+
+8. FIGURE FORMATTING:
+   - Use 0.32\textwidth for 3-column subfigures
+   - Use 0.95\linewidth for full-width figures
+   - Use \input{figures/legend} for shared legends
+   - Write self-contained captions explaining key observations
+
+9. RESULTS PRESENTATION:
+   - Define \increase and \decrease for colored arrows (green up, red down)
+   - Bold best results in tables
+   - Report confidence intervals when available
+
+10. ALGORITHM STYLING:
+    - Use algpseudocode with [noend]
+    - Use \triangleright for comments
+
+11. HYPERLINKS (REQUIRED):
+    - Always use \usepackage[hidelinks]{hyperref} or with colored links
+    - All citations, section refs, figure refs, table refs must be clickable
+    - This is essential for reader navigation
+
+════════════════════════════════════════════════════════════════════════════════
+                          WORKFLOW: REVIEW AND REFLECT
+════════════════════════════════════════════════════════════════════════════════
+
+Before calling finish, you MUST complete these review steps:
+
+1. REVIEW RESOURCES (at the start):
+   - Read .gemini/skills/paper-writer/SKILL.md for detailed guidance
+   - Study templates/paper_writing/lab_style_guide.md for style conventions
+   - Browse paper_examples/ for formatting and language patterns
+
+2. SELF-REFLECTION (before finishing):
+   After writing all sections, review your work against these criteria:
+
+   LANGUAGE CHECK:
+   - [ ] Is the writing clear and jargon-free?
+   - [ ] Are claims specific with quantitative support?
+   - [ ] Is active voice used throughout?
+
+   FORMATTING CHECK:
+   - [ ] Does main.tex include \input{commands/math}, \input{commands/general}, \input{commands/macros}?
+   - [ ] Is hyperref package included for clickable references?
+   - [ ] Do tables use booktabs (no vertical lines)?
+   - [ ] Are best results bolded in tables?
+   - [ ] Are figures/tables properly captioned?
+
+   STRUCTURE CHECK:
+   - [ ] Does introduction follow: hook → importance → gap → approach → preview → contributions?
+   - [ ] Are contribution bullets specific with action verbs?
+   - [ ] Does the paper compile without errors?
+
+3. FIX ISSUES:
+   - Address any issues found in the self-reflection
+   - Re-compile and verify the PDF looks correct
+
+Only after completing this review should you consider the paper finished.

@@ -1,0 +1,11 @@
+\section{Discussion}
+
+Our findings provide empirical evidence that LLMs possess a "social map" where distance translates into perceived opposition. This relational logic goes beyond simple sentiment; the model demonstrates a structural understanding of why certain personas would clash.
+
+{\bf Interpretation of Results.} The negative correlation between distance and agreement suggests that the "us-vs-them" dynamic is not limited to explicitly political or demographic groups but extends to a broader "persona space." This is particularly evident in the \schismogenesis results, where the model consistently constructs a counter-identity to oppose a target. This indicates that LLMs encode the relational nature of identity—the idea that who we are is partially defined by who we are *not*.
+
+{\bf Broader Implications.} These results have significant implications for social simulations and multi-agent systems. If LLMs inherently model dislike based on distance, there is a risk that AI agents in collaborative settings may struggle to find common ground if their personas are too disparate. Conversely, this property can be leveraged to study the mechanisms of polarization and group conflict in a controlled environment.
+
+{\bf Limitations.} While our results are significant, several limitations should be noted. First, our sample size was limited to 20 personas and 10 evaluators due to computational constraints. Second, we used \gpt; results might vary with larger models like GPT-4o or Claude 3.5 Sonnet. Finally, cosine distance of text embeddings is a proxy for "social distance" and might miss specific dimensions of conflict, such as status or power dynamics.
+
+{\bf Future Work.} Future research should investigate whether "fine-grained" distance in specific domains (e.g., aesthetics vs. ethics) predicts dislike differently. Additionally, exploring if LLMs can find "common ground" between distant personas when specifically prompted to do so could inform the design of more cooperative AI systems.

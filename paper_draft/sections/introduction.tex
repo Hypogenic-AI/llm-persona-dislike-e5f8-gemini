@@ -1,0 +1,19 @@
+\section{Introduction}
+
+As Large Language Models (LLMs) move from simple text generators to autonomous agents in multi-agent simulations and social modeling, understanding their internal representation of social dynamics becomes critical. Humans do not exist in isolation; our identities are defined not just by what we value, but by what we oppose. This relational aspect of identity—the "us-vs-them" dynamic—is a fundamental driver of human social behavior, polarization, and group formation.
+
+{\bf Why does this matter?} If LLMs inherently model "dislike" based on persona distance, they might inadvertently amplify polarization or fail to find common ground in multi-agent settings. Conversely, if they capture the relational logic of opposition, they could be powerful tools for understanding and mitigating social conflict. Capturing this "relational" aspect of identity is a key step toward more sophisticated and human-like social modeling.
+
+However, current research largely focuses on well-known social divides such as politics, race, or religion \cite{dong2024persona, prama2025us}. There is limited work on whether LLMs capture "persona-persona dislike" in a more fluid, preference-driven space. Specifically, does a distance in persona space—defined by disparate hobbies, values, and lifestyle—automatically translate into mutual devaluation of each other's specific preferences, even if those preferences aren't inherently controversial?
+
+We hypothesize that LLMs do not just model isolated persona traits but also encode the relational logic of opposition. To test this, we move beyond demographic and political divides to investigate whether LLMs exhibit "relational dislike" based on latent persona distance. We use high-fidelity, multifaceted personas from \dataset and test if the degree of "dislike" for another persona's preferences correlates with the distance between them in a multidimensional persona space (see \figref{fig:distance_vs_rating}).
+
+Our main finding is a strong and significant negative correlation ($r = -0.4913$, $p = 0.0003$) between persona distance and preference agreement. Furthermore, we demonstrate that LLMs can perform \schismogenesis with an 88\% rejection rate, showing that the "opposite" relationship is structurally encoded.
+
+Our contributions are as follows:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item We demonstrate that LLMs capture a "social map" where latent distance between personas translates into perceived opposition and preference devaluation.
+    \item We introduce the \Schismogenesis task to evaluate whether LLMs can systematically invert a target's preferences by constructing a counter-identity.
+    \item We conduct a quantitative analysis showing a significant correlation between embedding-based persona distance and Likert-scale preference agreement.
+    \item We provide qualitative evidence that LLMs justify their "dislike" through nuanced value-based contrasts rather than simple sentiment shifts.
+\end{itemize}

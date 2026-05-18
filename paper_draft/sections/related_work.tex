@@ -1,0 +1,9 @@
+\section{Related Work}
+
+The study of persona-conditioned LLMs has revealed their ability to adopt distinct social identities and exhibit human-like biases. We categorize related work into intergroup bias in LLMs and persona-steered generation.
+
+{\bf Intergroup Bias in LLMs.} Recent work has quantified "us-versus-them" dynamics in LLMs. \citet{prama2025us} demonstrate consistent ingroup favoritism and outgroup hostility across multiple architectures, finding that conservative personas often exhibit higher outgroup hostility. Similarly, \citet{dong2024persona} show that LLMs emulate "partisan sorting," where identities like race and religion align with partisan views, leading to reciprocal opposition. \citet{dong2024i} further highlight that outgroup bias (negativity toward "them") can be even more dominant than ingroup favoritism. Our work builds on these findings by moving beyond predefined social categories to a more fluid, embedding-based persona distance.
+
+{\bf Persona-Steered Generation and Sentiments.} LLMs are capable of adopting complex personas that reflect real-world social sentiments. \citet{tanaka2024are} validate that LLMs encode "inter-demographic sentiments" that align with societal surveys. However, steering models toward specific personas can also amplify existing biases \cite{liu2024evaluating}. While these studies focus on demographic groups, our research investigates whether purely preference-based distance leads to similar "dislike" dynamics.
+
+{\bf Schismogenesis.} Originally coined in anthropology to describe the process of differentiation in the norms of individual behavior resulting from cumulative interaction between individuals, we apply the term to LLMs. While others have explored identity adoption, we explicitly test "zero-shot schismogenesis"—the ability of a model to define its identity purely in opposition to another persona's preferences.
