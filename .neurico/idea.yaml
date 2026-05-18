@@ -1,0 +1,26 @@
+idea:
+  title: Do LLMs model persona-persona dislike?
+  domain: artificial_intelligence
+  hypothesis: 'Large language models may not only encode distinct and recognizable
+    personas, but also capture the tendency for personas with divergent preferences
+    to dislike each other''s preferences, reflecting the structure of human persona
+    space where distinction is often created through opposition rather than just individual
+    likes and dislikes.
+
+    '
+  background:
+    description: "The idea explores whether LLMs model not just individual persona\
+      \ preferences, but also the relational aspect of persona dislike\u2014specifically,\
+      \ whether personas that are far apart in \"persona space\" are more likely to\
+      \ dislike each other's preferences, mirroring a hypothesized feature of human\
+      \ social dynamics. This goes beyond modeling isolated likes and dislikes, probing\
+      \ whether LLMs capture the broader structure of persona distinction and opposition.\n"
+  metadata:
+    author: Ari Holtzman
+    source: IdeaHub
+    source_url: https://hypogenic.ai/ideahub/idea/bmJFacRgxhVuuDUD4wnA
+    idea_id: do_llms_model_persona_persona__20260518_003408_8fa97631
+    created_at: '2026-05-18T00:34:08.201467'
+    status: submitted
+    github_repo_name: llm-persona-dislike-e5f8-gemini
+    github_repo_url: https://github.com/Hypogenic-AI/llm-persona-dislike-e5f8-gemini
